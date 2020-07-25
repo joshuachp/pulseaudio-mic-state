@@ -1,6 +1,12 @@
 # pulseaudio-mic
 
-Get the status of the microphone with pulseaudio
+Get the status of the microphone with PulseAudio.
+
+Returns `true` if the microphone is muted, otherwise `false`.
+
+```bash
+sh -c "[[ \"\$(pulseaudio-mic-state --index 1)\" == 'true' ]] && echo mut || echo not-mute"
+```
 
 ## License
 
