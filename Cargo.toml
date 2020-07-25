@@ -1,5 +1,5 @@
 [package]
-name = "pulseaudio-mic"
+name = "pulseaudio-mic-state"
 version = "0.1.0"
 authors = ["Joshua Chapman <joshua.samuel.chapman@protonmail.com>"]
 edition = "2018"
