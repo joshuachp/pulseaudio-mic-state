@@ -2,10 +2,11 @@
 name = "pulseaudio-mic-state"
 version = "0.1.0"
 authors = ["Joshua Chapman <joshua.samuel.chapman@protonmail.com>"]
+description = "Gets the microphone state from pulseaudio."
+repository = "https://github.com/joshuachp/pulseaudio-mic-state"
 edition = "2018"
 license = "MIT OR Apache-2.0"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
+clap = "2.33.1"
 libpulse-binding = "2.16.1"
