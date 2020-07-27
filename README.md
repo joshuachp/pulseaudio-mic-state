@@ -2,10 +2,14 @@
 
 Get the status of the microphone with PulseAudio.
 
-Returns `true` if the microphone is muted, otherwise `false`.
+Returns `true` if the microphone is muted, otherwise `false`. If an id or name 
+is not specified, it will return the state of the default source.
 
+## Quick Example
+
+This example shows how to get and format the output.
 ```bash
-sh -c "[[ \"\$(pulseaudio-mic-state --index 1)\" == 'true' ]] && echo mut || echo not-mute"
+[[ \"\$(pulseaudio-mic-state --index 1)\" == 'true' ]] && echo mut || echo not-mute
 ```
 
 ## License
