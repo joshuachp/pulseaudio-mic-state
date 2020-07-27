@@ -9,7 +9,15 @@ is not specified, it will return the state of the default source.
 
 This example shows how to get and format the output.
 ```bash
-[[ \"\$(pulseaudio-mic-state --index 1)\" == 'true' ]] && echo mut || echo not-mute
+[[ "$(pulseaudio-mic-state --index 1)" == 'true' ]] && echo muted || echo not-muted
+```
+## Build
+
+```bash
+git clone https://github.com/joshuachp/pulseaudio-mic-state.git
+cd pulseaudio-mic-state
+cargo build --release
+./target/release/pulseaudio-mic-state
 ```
 
 ## License
