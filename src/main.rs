@@ -117,13 +117,13 @@ fn get_arguments() -> Source {
                 .short("i")
                 .long("index")
                 .takes_value(true)
-                .help("Index of the source to get"),
+                .help("Index of the source"),
         )
         .arg(
             Arg::with_name("name")
                 .long("name")
                 .takes_value(true)
-                .help("Name of the source to get"),
+                .help("Name of the source"),
         )
         .group(ArgGroup::with_name("SOURCE").args(&["index", "name"]))
         .get_matches();
