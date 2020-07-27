@@ -1,4 +1,4 @@
-# pulseaudio-mic
+# pulseaudio-mic-state
 
 Get the status of the microphone with PulseAudio.
 
