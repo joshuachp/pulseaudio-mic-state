@@ -14,6 +14,7 @@ enum Source {
     Index(u32),
     // NOTE: Lifetime problem using &str
     Name(String),
+    Default,
 }
 
 fn main() {
@@ -76,6 +77,10 @@ fn main() {
         Source::Name(name) => {
             state = introspect.get_source_info_by_name(&name, source_information_callback);
         }
+        Source::Default => {
+            state =
+                introspect.get_source_info_by_name("@DEFAULT_SOURCE@", source_information_callback);
+        }
     }
 
     // Wait for results
@@ -117,19 +122,17 @@ fn get_arguments() -> Source {
                 .takes_value(true)
                 .help("Name of the source to get"),
         )
-        .group(
-            ArgGroup::with_name("SOURCE")
-                .required(true)
-                .args(&["index", "name"]),
-        )
+        .group(ArgGroup::with_name("SOURCE").args(&["index", "name"]))
         .get_matches();
 
     if matches.is_present("index") {
         let index: u32 = value_t_or_exit!(matches.value_of("index"), u32);
         return Source::Index(index);
+    } else if matches.is_present("name") {
+        let name = matches.value_of("name").unwrap();
+        return Source::Name(String::from(name));
     }
-    let name = matches.value_of("name").unwrap();
-    Source::Name(String::from(name))
+    Source::Default
 }
 
 fn source_information_callback(list: ListResult<&SourceInfo>) {
