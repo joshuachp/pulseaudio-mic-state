@@ -108,6 +108,9 @@ fn main() {
 fn get_arguments() -> Source {
     let matches = App::new(crate_name!())
         .about(crate_description!())
+        .after_help(
+            "If an id or name is not specified, it will return the state of the default source.",
+        )
         .version(crate_version!())
         .arg(
             Arg::with_name("index")
