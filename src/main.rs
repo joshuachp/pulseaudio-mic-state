@@ -1,6 +1,7 @@
 extern crate libpulse_binding as pulse;
 
-use clap::{crate_description, crate_name, crate_version, value_t_or_exit, App, Arg, ArgGroup};
+use clap::{crate_description, crate_name, crate_version, value_t_or_exit};
+use clap::{App, Arg, ArgGroup};
 use pulse::callbacks::ListResult;
 use pulse::context::introspect::SourceInfo;
 use pulse::context::Context;
@@ -14,7 +15,7 @@ enum Source {
 }
 
 fn main() {
-    let source = get_arguments();
+    let (source, muted, unmuted) = get_arguments();
 
     let mut prop_list = Proplist::new().unwrap();
     prop_list
@@ -54,6 +55,16 @@ fn main() {
         }
     }
 
+    let source_information_callback = move |list: ListResult<&SourceInfo>| {
+        if let ListResult::Item(item) = list {
+            if item.mute {
+                println!("{}", muted);
+            } else {
+                println!("{}", unmuted);
+            }
+        }
+    };
+
     // Get source state
     let introspect = context.introspect();
     let state;
@@ -92,7 +103,7 @@ fn main() {
     }
 }
 
-fn get_arguments() -> Source {
+fn get_arguments() -> (Source, String, String) {
     let matches = App::new(crate_name!())
         .about(crate_description!())
         .after_help(
@@ -112,21 +123,31 @@ fn get_arguments() -> Source {
                 .takes_value(true)
                 .help("Name of the source"),
         )
+        .arg(
+            Arg::with_name("muted")
+                .long("muted")
+                .takes_value(true)
+                .help("Text to print when muted"),
+        )
+        .arg(
+            Arg::with_name("unmuted")
+                .long("unmuted")
+                .takes_value(true)
+                .help("Text to print when unmuted"),
+        )
         .group(ArgGroup::with_name("SOURCE").args(&["index", "name"]))
         .get_matches();
 
-    if matches.is_present("index") {
-        let index: u32 = value_t_or_exit!(matches.value_of("index"), u32);
-        return Source::Index(index);
+    let source = if matches.is_present("index") {
+        Source::Index(value_t_or_exit!(matches.value_of("index"), u32))
     } else if matches.is_present("name") {
-        let name = matches.value_of("name").unwrap();
-        return Source::Name(String::from(name));
-    }
-    Source::Default
-}
+        Source::Name(String::from(matches.value_of("name").unwrap()))
+    } else {
+        Source::Default
+    };
 
-fn source_information_callback(list: ListResult<&SourceInfo>) {
-    if let ListResult::Item(item) = list {
-        println!("{}", item.mute)
-    }
+    let muted = String::from(matches.value_of("muted").unwrap_or("muted"));
+    let unmuted = String::from(matches.value_of("unmuted").unwrap_or("unmuted"));
+
+    (source, muted, unmuted)
 }
