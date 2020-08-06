@@ -6,13 +6,9 @@ use pulse::context::introspect::SourceInfo;
 use pulse::context::Context;
 use pulse::mainloop::standard::{IterateResult, Mainloop};
 use pulse::proplist::Proplist;
-use std::cell::RefCell;
-use std::ops::Deref;
-use std::rc::Rc;
 
 enum Source {
     Index(u32),
-    // NOTE: Lifetime problem using &str
     Name(String),
     Default,
 }
@@ -28,34 +24,25 @@ fn main() {
         )
         .unwrap();
 
-    let main_loop = Rc::new(RefCell::new(
-        Mainloop::new().expect("Failed to create mainloop"),
-    ));
+    let mut main_loop = Mainloop::new().expect("Failed to create mainloop");
 
-    let context = Rc::new(RefCell::new(
-        Context::new_with_proplist(
-            main_loop.borrow().deref(),
-            "PulseaudioMicContext",
-            &prop_list,
-        )
-        .expect("Failed to create new context"),
-    ));
+    let mut context = Context::new_with_proplist(&main_loop, "PulseaudioMicContext", &prop_list)
+        .expect("Failed to create new context");
 
     context
-        .borrow_mut()
         .connect(None, pulse::context::flags::NOAUTOSPAWN, None)
         .expect("Failed to connect context");
 
     // Wait for context to be ready
     loop {
-        match main_loop.borrow_mut().iterate(false) {
+        match main_loop.iterate(false) {
             IterateResult::Quit(_) | IterateResult::Err(_) => {
                 eprintln!("Iterate state was not success, quitting...");
                 return;
             }
             IterateResult::Success(_) => {}
         }
-        match context.borrow().get_state() {
+        match context.get_state() {
             pulse::context::State::Ready => {
                 break;
             }
@@ -68,7 +55,7 @@ fn main() {
     }
 
     // Get source state
-    let introspect = context.borrow().introspect();
+    let introspect = context.introspect();
     let state;
     match source {
         Source::Index(index) => {
@@ -85,7 +72,7 @@ fn main() {
 
     // Wait for results
     loop {
-        match main_loop.borrow_mut().iterate(false) {
+        match main_loop.iterate(false) {
             IterateResult::Quit(_) | IterateResult::Err(_) => {
                 eprintln!("Iterate state was not success, quitting...");
                 return;
