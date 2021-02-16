@@ -1,7 +1,9 @@
-# pulseaudio-mic-state 
+# pulseaudio-mic-state
+
 Get and prints the status of the microphone with PulseAudio :microphone:
 
-If an id or name is not specified, it will return the state of the default source.
+If an id or name is not specified, it will return the state of the default
+source.
 
 You can specify `--muted` or `--unmuted` to print a different text for the
 respective states.
@@ -15,20 +17,11 @@ cargo build --release
 ./target/release/pulseaudio-mic-state
 ```
 
-## License
+## Copyright & Licensing
 
-Licensed under either of
+All parts of these binding libraries are fully open-source and free to use.
 
- * Apache License, Version 2.0
-   ([LICENSE-APACHE](LICENSE-APACHE) or http://www.apache.org/licenses/LICENSE-2.0)
- * MIT license
-   ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
-
-at your option.
-
-## Contribution
-
-Unless you explicitly state otherwise, any contribution intentionally submitted
-for inclusion in the work by you, as defined in the Apache-2.0 license, shall be
-dual licensed as above, without any additional terms or conditions.
-
+All files in this source code repository, except as noted below, are licensed
+under the MIT license or the Apache license, Version 2.0, at your option. You
+can find copies of these licenses either in the LICENSE-MIT and LICENSE-APACHE
+files, or alternatively here and here respectively.

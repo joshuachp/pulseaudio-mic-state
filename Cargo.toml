@@ -8,5 +8,5 @@ edition = "2018"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-clap = "2.33.1"
-libpulse-binding = "2.16.1"
+clap = "2"
+pulse = { version = "2", package = "libpulse-binding"}

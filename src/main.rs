@@ -1,12 +1,10 @@
-extern crate libpulse_binding as pulse;
-
-use clap::{crate_description, crate_name, crate_version, value_t_or_exit};
-use clap::{App, Arg, ArgGroup};
-use pulse::callbacks::ListResult;
-use pulse::context::introspect::SourceInfo;
-use pulse::context::Context;
-use pulse::mainloop::standard::{IterateResult, Mainloop};
-use pulse::proplist::Proplist;
+use clap::{crate_description, crate_name, crate_version, value_t_or_exit, App, Arg, ArgGroup};
+use pulse::{
+    callbacks::ListResult,
+    context::{introspect::SourceInfo, Context, FlagSet},
+    mainloop::standard::{IterateResult, Mainloop},
+    proplist::Proplist,
+};
 
 enum Source {
     Index(u32),
@@ -31,7 +29,7 @@ fn main() {
         .expect("Failed to create new context");
 
     context
-        .connect(None, pulse::context::flags::NOAUTOSPAWN, None)
+        .connect(None, FlagSet::NOAUTOSPAWN, None)
         .expect("Failed to connect context");
 
     // Wait for context to be ready
