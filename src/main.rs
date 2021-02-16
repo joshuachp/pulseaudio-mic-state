@@ -13,7 +13,7 @@ enum Source {
 }
 
 fn main() {
-    let (source, muted, unmuted) = get_arguments();
+    let (source, muted_text, unmuted_text) = get_arguments();
 
     let mut prop_list = Proplist::new().unwrap();
     prop_list
@@ -56,28 +56,26 @@ fn main() {
     let source_information_callback = move |list: ListResult<&SourceInfo>| {
         if let ListResult::Item(item) = list {
             if item.mute {
-                println!("{}", muted);
+                println!("{}", muted_text);
             } else {
-                println!("{}", unmuted);
+                println!("{}", unmuted_text);
             }
         }
     };
 
     // Get source state
     let introspect = context.introspect();
-    let state;
-    match source {
+    let state = match source {
         Source::Index(index) => {
-            state = introspect.get_source_info_by_index(index, source_information_callback);
+            introspect.get_source_info_by_index(index, source_information_callback)
         }
         Source::Name(name) => {
-            state = introspect.get_source_info_by_name(&name, source_information_callback);
+            introspect.get_source_info_by_name(&name, source_information_callback)
         }
         Source::Default => {
-            state =
-                introspect.get_source_info_by_name("@DEFAULT_SOURCE@", source_information_callback);
+            introspect.get_source_info_by_name("@DEFAULT_SOURCE@", source_information_callback)
         }
-    }
+    };
 
     // Wait for results
     loop {
