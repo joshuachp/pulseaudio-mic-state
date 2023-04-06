@@ -4,9 +4,12 @@ version = "0.1.0"
 authors = ["Joshua Chapman <joshua.samuel.chapman@protonmail.com>"]
 description = "Gets the microphone state from pulseaudio."
 repository = "https://github.com/joshuachp/pulseaudio-mic-state"
-edition = "2018"
+keywords = ["pulseaudio", "microphone", "state"]
+categories = ["command-line-utilities"]
+edition = "2021"
 license = "MIT"
 
 [dependencies]
-clap = "2"
-pulse = { version = "2", package = "libpulse-binding"}
+clap = { version = "4.2.1", features = [ "derive" ] }
+color-eyre = "0.6.2"
+pulse = { version = "2.27.1", package = "libpulse-binding"}
