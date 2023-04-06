@@ -22,5 +22,5 @@ cargo build --release
 All parts of these binding libraries are fully open-source and free to use.
 
 All files in this source code repository, except as noted below, are licensed
-under the MIT license. You can find copies of these licenses in the 
+under the MIT license. You can find copies of these licenses in the
 [LICENSE](LICENSE) file.
